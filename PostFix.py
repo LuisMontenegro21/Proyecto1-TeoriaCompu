@@ -1,48 +1,61 @@
-# Archivo con las funciones para conversión a postfix 
+# Retorna la precedencia del operador c
+def getPrecedence(c):
+    # Si no es un operador, retorna 0
+    precedence = {
+        '(': 1,
+        '|': 2,
+        '.': 3,
+        '?': 4,
+        '*': 4,
+        '+': 4,
+        '^': 5
+    }
+    return precedence.get(c, 0)
+# Agrega puntos para denotar concatenación implícita entre operandos
+def formatRegEx(regex):
+    # Retorna la expresión regular formateada
+    allOperators = ['|', '?', '+', '*', '^']
+    binaryOperators = ['^', '|']
+    res = ""
 
-# Para la presedencia de operadores
-precedence = {'|': 1, '.': 2, '*': 3}
+    for i in range(len(regex)):
+        c1 = regex[i]
 
-# define operadores definidos
-def is_operator(token):
-        return token in "|.*"
+        if i + 1 < len(regex):
+            c2 = regex[i + 1]
 
-#define la presedencia de los operadores
-def has_higher_precedence(op1, op2):
-        return precedence[op1] > precedence[op2]
+            res += c1
 
-#emplea el algo ritmo shunting yard
-def shunting_yard(expression):
-        output = []
-        operator_stack = []
+            if (c1 != '(' and c2 != ')' and c2 not in allOperators and c1 not in binaryOperators):
+                res += '.'
+                
+    # Concatena el último carácter de la expresión regular
+    res += regex[-1]
+    return res
 
-        # se recorre la expresión
-        for token in expression:
-            # si el token se encuentra 0-9 o a-z se manda a la cola
-            if token.isalnum():  
-                output.append(token)
-            elif is_operator(token):
-                while (operator_stack and is_operator(operator_stack[-1]) and
-                       has_higher_precedence(operator_stack[-1], token)):
-                    output.append(operator_stack.pop())
-                operator_stack.append(token)
-            elif token == '(':  
-                operator_stack.append(token)
-            elif token == ')':  
-                while operator_stack and operator_stack[-1] != '(':
-                    output.append(operator_stack.pop())
-                if operator_stack and operator_stack[-1] == '(':
-                    operator_stack.pop()
+# Convierte la expresión de infix a postfix
+def infixToPostfix(regex):
+    postfix = ""
+    stack = []
+    formattedRegEx = formatRegEx(regex)
 
-        while operator_stack:
-            output.append(operator_stack.pop())
+    for c in formattedRegEx:
+        if c == '(':
+            stack.append(c)
+        elif c == ')':
+            # Extrae operadores de la pila hasta encontrar '(' correspondiente
+            while stack and stack[-1] != '(':
+                postfix += stack.pop()
+            if stack and stack[-1] == '(':
+                stack.pop()  # Elimina el '(' de la pila
+        else:
+            # Procesa operadores basándose en su precedencia
+            while stack and getPrecedence(stack[-1]) >= getPrecedence(c):
+                postfix += stack.pop()
+            stack.append(c)
 
-        return output
+    # Añade los operadores restantes de la pila al resultado final
+    while stack:
+        postfix += stack.pop()
 
-def infix_to_postfix(expression):
-    expression = expression.replace(" ", "")
-    tokens = [c for c in expression]
-
-    postfix_tokens = shunting_yard(tokens)
-    postfix_expression = "".join(postfix_tokens)
-    return postfix_expression
+    return postfix # Fin de la función

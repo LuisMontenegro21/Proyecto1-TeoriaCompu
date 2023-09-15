@@ -1,16 +1,19 @@
 # Universidad del Valle de Guatemala
 # Ing. en Ciencias de la Computación
 # Teoría de la Computación
-# Gabriel García, Luis Montenegro 21699
+# Gabriel García 21352, Luis Montenegro 21699
 # Programa para conversión de expresiones regulares
 
-from PostFix import infix_to_postfix as toPostFix
+from PostFix import infixToPostfix
 
 
 
 def evaluate(r, w):
-    postFixExpression = toPostFix(r)
-    print("Postfix: " + postFixExpression)
+    # r = regex
+    postfix_expr = infixToPostfix(r)
+    print(f"Regex: {r}")
+    print(f"Postfix: {postfix_expr}")
+    print()
     return 0
 
 
