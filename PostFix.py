@@ -1,19 +1,24 @@
-# Clase con las funciones para conversión a postfix 
+# Archivo con las funciones para conversión a postfix 
 
-def infix_to_postfix(expression):
-    precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
+# Para la presedencia de operadores
+precedence = {'|': 1, '.': 2, '*': 3}
 
-    def is_operator(token):
-        return token in "+-*/^"
+# define operadores definidos
+def is_operator(token):
+        return token in "|.*"
 
-    def has_higher_precedence(op1, op2):
+#define la presedencia de los operadores
+def has_higher_precedence(op1, op2):
         return precedence[op1] > precedence[op2]
 
-    def shunting_yard(expression):
+#emplea el algo ritmo shunting yard
+def shunting_yard(expression):
         output = []
         operator_stack = []
 
+        # se recorre la expresión
         for token in expression:
+            # si el token se encuentra 0-9 o a-z se manda a la cola
             if token.isalnum():  
                 output.append(token)
             elif is_operator(token):
@@ -34,6 +39,7 @@ def infix_to_postfix(expression):
 
         return output
 
+def infix_to_postfix(expression):
     expression = expression.replace(" ", "")
     tokens = [c for c in expression]
 

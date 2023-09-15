@@ -1,0 +1,1 @@
+# Archivo para la reducción de un AFD

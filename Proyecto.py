@@ -8,8 +8,15 @@ from PostFix import infix_to_postfix as toPostFix
 
 
 
-# Example usage:
-infix_expression = "3 + 4 * (2 - 1)"
-postfix_result = toPostFix(infix_expression)
-print("Infix Expression:", infix_expression)
-print("Postfix Expression:", postfix_result)
+def evaluate(r, w):
+    postFixExpression = toPostFix(r)
+    print("Postfix: " + postFixExpression)
+    return 0
+
+
+print("Programa para conversión de expresiones regulares a autómatas\n" + 
+          "En este programa se denota a epsilon como e")
+r = str(input("Ingrese una expresion regular r: "))
+w = str(input("Ingrese una cadena w: "))
+evaluate(r, w)
+
