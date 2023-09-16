@@ -4,16 +4,27 @@
 # Gabriel García 21352, Luis Montenegro 21699
 # Programa para conversión de expresiones regulares
 
-from PostFix import infixToPostfix
-
+from PostFix import shutingYard
+os.environ["PATH"] += os.pathsep + "C:/Program Files/Graphviz/bin/"
 
 
 def evaluate(r, w):
     # r = regex
-    postfix_expr = infixToPostfix(r)
-    print(f"Regex: {r}")
-    print(f"Postfix: {postfix_expr}")
+    postfix_expr = shutingYard(r)
     print()
+    print(f"Resultado final: {postfix_expr}")
+    print()
+    
+    
+    print("Tree")
+    hierarchy = ""
+    for i in range(gethierarchy(tree)):
+        hierarchy += " L"+ str(i)
+    print(level+"\n")
+    printTree(tree)
+    Graph = 
+    Graph.render()
+    
     return 0
 
 

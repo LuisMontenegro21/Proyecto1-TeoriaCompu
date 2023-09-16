@@ -1,61 +1,180 @@
-# Retorna la precedencia del operador c
-def getPrecedence(c):
-    # Si no es un operador, retorna 0
-    precedence = {
-        '(': 1,
-        '|': 2,
-        '.': 3,
-        '?': 4,
-        '*': 4,
-        '+': 4,
-        '^': 5
-    }
-    return precedence.get(c, 0)
-# Agrega puntos para denotar concatenación implícita entre operandos
-def formatRegEx(regex):
-    # Retorna la expresión regular formateada
-    allOperators = ['|', '?', '+', '*', '^']
-    binaryOperators = ['^', '|']
-    res = ""
+# libreria regular expressions = re
+import re
 
-    for i in range(len(regex)):
-        c1 = regex[i]
+def shutingYard(regex):
+    openCaracter = ["(", "[", "}"]
+    closeCaracter = [")", "]", "}"]
+    def getPrecedence(c):
+        # Si no es un operador, retorna 0
+        precedence = {
+            "|": 1,
+            "^": 2,
+            "*": 3
+        }
+        return precedence.get(c, 0)
 
-        if i + 1 < len(regex):
-            c2 = regex[i + 1]
+    def plusToAsterisk(regex):
+        #ConvertRegex = cRegex
+        cRegex = ""
+        i = 0
+        for c in regex:
+            if c == '+':
+                if regex[i-1] in closeCaracter:
+                    # i-1, i-2, i-3
+                    for j in range(i-1, -1, -1):
+                        if regex[j] in openCaracter:
+                            cRegex += regex[j:i] + "*"
+                            break
+            # Si no es + no lo cambia
+            else:
+                cRegex += c
+            i += 1
+        return cRegex
 
-            res += c1
 
-            if (c1 != '(' and c2 != ')' and c2 not in allOperators and c1 not in binaryOperators):
-                res += '.'
-                
-    # Concatena el último carácter de la expresión regular
-    res += regex[-1]
-    return res
+    def caracterClass(regex):
+        cRegex = ""
+        i = 0
+        conf = True
+        for c in regex:
+            if (conf):
+                if c == "[":
+                    cRegex += "("
+                    conf = False
+                else:
+                    if c == "]":
+                        cRegex += ")"
+                    else:
+                        cRegex += c
+            else:
+                if regex[i+1] == "]":
+                    cRegex += c
+                    conf = True
+                else:
+                    cRegex += c + "|"
+            i += 1
+        return cRegex   
+                    
+    def interrogationToEpsilon(regex):
+        stack = []
+        #Open Caracter List = openCList
+        openCList = []
+        i = 0
+        for c in regex:
+            if c == '?':
+                if regex[i - 1] == ")":
+                    # i-1, i-2, i-3
+                    for j in range(i-1, -1, -1):
+                        if regex[j] == ")":
+                            stack.append(regex[j])
+                        else:
+                            if regex[j] == "(":
+                                stack.pop()
+                                if len(stack) == 0:
+                                    openCList.append(j + 1)
+                                    break
+                else:
+                    openCList.append(i-1)
+            i += 1
+        cRegex = ""
+        i = 0
+        for c in regex:
+            if i in openCList:
+                count = openCList.count(i)
+                cRegex += "(" * count + c
+            else:
+                if c == "?":
+                    cRegex += c + ")"
+                else:
+                    cRegex += c
+            i += 1
 
-# Convierte la expresión de infix a postfix
-def infixToPostfix(regex):
-    postfix = ""
+        return cRegex.replace('?', '|ε')
+    
+    
+    def concatenation(regex):
+        # raw String
+        pattern = r'(?<=[a-zA-Z0-9*.ε)\\])(?=[a-zA-Z0-9.(\\@ε])'
+        regex = re.sub(pattern, '^', regex)
+        # raw String
+        pattern = r'(?<=[)\\@])(?=[(a-zA-Z0-9.ε\\@])'
+        regex = re.sub(pattern, '^', regex)
+        regex = regex.replace('\\^', '\\')
+        i = 0
+        cRegex = ""
+        for c in regex:
+            if i != 0 and i != len(regex) - 1:
+                if c in openCaracter or c in closeCaracter:
+                    if regex[i - 1] == "\\":
+                        if regex[i + 1] != "^":
+                            cRegex += c + "^"
+                        else:
+                            cRegex += c
+                    else:
+                        cRegex += c
+                else:
+                    cRegex += c
+            else:
+                cRegex += c
+            i += 1
+
+        return cRegex
+    
+    
+    def convert(regex):
+        return concatenation(interrogationToEpsilon(caracterClass(plusToAsterisk(regex))).replace("E", "ε"))
+    
+    
+    queue = []
     stack = []
-    formattedRegEx = formatRegEx(regex)
-
-    for c in formattedRegEx:
-        if c == '(':
-            stack.append(c)
-        elif c == ')':
-            # Extrae operadores de la pila hasta encontrar '(' correspondiente
-            while stack and stack[-1] != '(':
-                postfix += stack.pop()
-            if stack and stack[-1] == '(':
-                stack.pop()  # Elimina el '(' de la pila
+    i = 0
+    postfix_expr = convert(regex)
+    print(f"Expresion: {regex}")
+    print(f"Postfix: {postfix_expr}")
+    
+    for char in regex:
+        if char.isalnum() or (char == "(" and regex[i - 1] == "\\") or (char == ")" and regex[i - 1] == "\\"):
+            if char == "n":
+                if regex[i - 1] != "\\":
+                    queue.append(char)
+                else:
+                    queue.append("\\"+char)
+            else:
+                queue.append(char)
         else:
-            # Procesa operadores basándose en su precedencia
-            while stack and getPrecedence(stack[-1]) >= getPrecedence(c):
-                postfix += stack.pop()
-            stack.append(c)
+            if getPrecedence(char):
+                while stack and getPrecedence(stack[-1]) >= getPrecedence(char):
+                    c = stack.pop()
+                    queue.append(c)
+                stack.append(char)
+            else:
+                if char == "(" and regex[i - 1] != "\\":
+                    stack.append(char)
+            else:
+                if char == ")" and regex[i - 1] != "\\":
+                while stack and stack[-1] != "(":
+                    c = stack.pop()
+                    queue.append(c)
+                c = stack.pop()
+        i += 1
 
-    # Añade los operadores restantes de la pila al resultado final
     while stack:
-        postfix += stack.pop()
+        c = stack.pop()
+        queue.append(c)
+        
+    
+    string = "".join(queue)
+    
+    res = ""
+    i = 0
+    for c in string:  
+        if c == '\\':
+            if string[i + 1] == "n":
+                res += "\\"
+            else:
+                res += ""
+        else:
+            res += c
+        i += 1
 
-    return postfix # Fin de la función
+    return res
