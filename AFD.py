@@ -45,12 +45,12 @@ class AFD:
         closure_stack = [self.states_dict[state]]
         
         while(len(closure_stack) > 0):
-            top = closure_stack.pop(0)
+            curr = closure_stack.pop(0)
             for i in self.transition_table[str(top)+str(self.alphabet_dict['e'])]:
                 if i not in closure.keys():
                     closure[i] = 0
                     closure_stack.append(i)
-            closure[top] = 1
+            closure[curr] = 1
         return closure.keys()
     
     def stateName(self, state_list):
@@ -59,11 +59,84 @@ class AFD:
             name += self.states[i]
         return name
     
-    def isFinalState(self, state_list):
+    def isFinalStateDFA(self, state_list):
         for i in state_list:
             for j in self.finals:
                 if (i == self.states_dict[j]):
                     return True
         return False
 
-    
+    def graphing(self, nfa):
+        #graficando el AFN
+        nfa.graph = Digraph()
+        for i in nfa.states:
+            if (i not in nfa.finals):
+                nfa.graph.attr('nodo', shape = 'circle')
+                nfa.graph.node(i)
+            else: 
+                nfa.graph.attr('nodo', shape = 'doubleCircle')
+                nfa.graph.node(i)
+        nfa.graph.attr('nodo', shape = 'none')
+        nfa.graph.node('')
+        nfa.graph.edge('', nfa.start)   
+
+        for i in nfa.transitions:
+            nfa.graph.edge(i[0], i[2], label = ('ε', i[1])[i[1] != 'e'])
+        nfa.graph.render('nfa', view = True)
+
+        #graficando el AFD
+        dfa = Digraph()
+        epsilon_closure = dict()
+        for i in nfa.states:
+            epsilon_closure[i] = list(nfa.epsilonClosure(i))
+        
+        dfa_stack = list()
+        dfa_stack.append(epsilon_closure[nfa.start])
+
+        if (nfa.isFinalStateDFA(dfa_stack[0])):
+            dfa.attr('nodo', shape = 'doubleCircle')
+        else:
+            dfa.attr('nodo', shape = 'circle')
+        dfa.node(nfa.stateName(dfa_stack[0]))
+
+        dfa.attr('node', shape = 'none')
+        dfa.node('')
+        dfa.edge('', nfa.stateName(dfa_stack[0]))
+
+        dfa_states = list()
+        dfa_states.append(epsilon_closure[nfa.start])
+
+        while(len(dfa_stack) > 0):
+            curr_state = dfa_stack.pop(0)
+            for all in range (nfa.num_alphabet - 1):
+                from_closure = set()
+                for i in curr_state:
+                    from_closure.update(set(nfa.transition_table[str(i)+str(all)]))
+                if (len(from_closure) > 0):
+                    to_state = set()
+                    for i in list(from_closure):
+                        to_state.update(set(epsilon_closure[nfa.states[i]]))
+                    if list(to_state) not in dfa_states:
+                        dfa_stack.append(list(to_state))
+                        dfa_states.append(list(to_state))
+
+                        if (nfa.isFinalStateDFA(list(to_state))):
+                            dfa.attr('nodo', shape = 'doubleCircle')
+                        else:
+                            dfa.attr('nodo', shape = 'circle')
+                        dfa.node(nfa.stateName(list(to_state)))
+                    
+                    dfa.edge(nfa.stateName(curr_state)), nfa.stateName(list(to_state), label = nfa.alphabet[all])
+
+                else:
+                    if (-1) not in dfa_states:
+                        dfa.attr('nodo', shape = 'circle')
+                        dfa.node('φ')
+
+                        for a in range (nfa.num_aphabet - 1):
+                            dfa.edge('φ', 'φ', nfa.alphabet[a])
+                        
+                        dfa_states.append(-1)
+
+                    dfa.edge(nfa.stateName(curr_state), 'φ', label = nfa.alphabet[all])
+                
