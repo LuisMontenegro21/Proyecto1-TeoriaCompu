@@ -5,7 +5,8 @@
 # Programa para conversión de expresiones regulares
 
 from PostFix import shutingYard
-os.environ["PATH"] += os.pathsep + "C:/Program Files/Graphviz/bin/"
+from AFD import AFD
+#os.environ["PATH"] += os.pathsep + "C:/Program Files/Graphviz/bin/"
 
 
 def evaluate(r, w):
@@ -15,15 +16,17 @@ def evaluate(r, w):
     print(f"Resultado final: {postfix_expr}")
     print()
     
-    
     print("Tree")
     hierarchy = ""
     for i in range(gethierarchy(tree)):
         hierarchy += " L"+ str(i)
     print(level+"\n")
     printTree(tree)
-    Graph = 
     Graph.render()
+
+    #pasarle un NFA al argumento de la función
+    nfa = []
+    AFD.graphing(nfa)
     
     return 0
 

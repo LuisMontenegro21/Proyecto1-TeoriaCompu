@@ -13,7 +13,7 @@ class AFD:
         self.num_transitions = num_transitions
         self.transitions = transitions
 
-        #self.graph = Digraph()
+        self.graph = Digraph()
         self.alphabet.append('e')
         self.num_alphabet += 1
 
@@ -34,8 +34,6 @@ class AFD:
     
     def __repr__(self):
         return 'Q : ' + str(self.states) + "\nΣ : " + str(self.alphabets) + "\nq0 : " + str(self.start) +  "\nF : " + str(self.final_states) + "\nδ : \n" + str(self.transition_table)
-
-        return 0
     
     def epsilonClosure(self, state):
         #Se crea un diccionario para ver si el estado ya ha sido visitado
@@ -46,7 +44,7 @@ class AFD:
         
         while(len(closure_stack) > 0):
             curr = closure_stack.pop(0)
-            for i in self.transition_table[str(top)+str(self.alphabet_dict['e'])]:
+            for i in self.transition_table[str(curr)+str(self.alphabet_dict['e'])]:
                 if i not in closure.keys():
                     closure[i] = 0
                     closure_stack.append(i)
@@ -139,4 +137,4 @@ class AFD:
                         dfa_states.append(-1)
 
                     dfa.edge(nfa.stateName(curr_state), 'φ', label = nfa.alphabet[all])
-                
+        dfa.render('dfa', view = True)        
