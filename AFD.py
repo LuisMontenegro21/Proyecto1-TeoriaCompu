@@ -1,10 +1,8 @@
 # Archivo para la conversión del AFN a un AFD mediante construcción de subconjuntos
-
+from graphviz import Diagraph
 
 class AFD:
-    def __init__(self, num_states, states, num_alphabet,
-                 alphabet, start, num_final, final_states, 
-                 num_transitions, transitions):
+    def __init__(self, num_states, states, num_alphabet, alphabet, start, num_final, final_states, num_transitions, transitions):
         self.num_states = num_states
         self.states = states
         self.num_alphabet = num_alphabet
@@ -33,9 +31,6 @@ class AFD:
         for i in range(self.num_transitions):
             self.transition_table[str(self.states_dict[self.transitions[i][0]]) + str(self.alphabet_dict[self.transitions[i][1]])].append(self.states_dict[self.transitions[i][2]])
         
-    def gatherInput():
-
-        return 0
     
     def __repr__(self):
         return 'Q : ' + str(self.states) + "\nΣ : " + str(self.alphabets) + "\nq0 : " + str(self.start) +  "\nF : " + str(self.final_states) + "\nδ : \n" + str(self.transition_table)
@@ -54,7 +49,7 @@ class AFD:
             for i in self.transition_table[str(top)+str(self.alphabet_dict['e'])]:
                 if i not in closure.keys():
                     closure[i] = 0
-                    closure_stack.append(x)
+                    closure_stack.append(i)
             closure[top] = 1
         return closure.keys()
     
