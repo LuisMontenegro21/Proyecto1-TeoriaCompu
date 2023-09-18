@@ -28,6 +28,7 @@ class Graficador(object):
                 if character == "*":
                     # Si es el operador de repetición (*)
                     if len(stack) >= 1:
+                        print("Entra 1")
                         nodes = stack.pop()
                         newN = Node(character)
                         # Conectar el nodo de repetición al último nodo apilado
@@ -40,6 +41,7 @@ class Graficador(object):
                     if character in "|^":
                         # Si es un operador OR (|) o concatenación (^)
                         if len(stack) >= 2:
+                            print("Entra 2")
                             newN = Node(character)
                             rightNode = stack.pop()
                             leftNode = stack.pop()
@@ -50,6 +52,7 @@ class Graficador(object):
                             stack.append(newN)
                         else:
                             raise Exception("Expresión inválida: Faltan operandos para | o ^")
+        
 
         if len(stack) == 1:
             # Si solo queda un nodo en la pila, es el árbol de expresión completo

@@ -25,7 +25,7 @@ def evaluate(r, w):
     State.count = 1
     afn = thompson(root)
     afnPDF = afn.diagram()
-    afnPDF.render(f'afn_{index + 1}', view = True, cleanup=True)
+    afnPDF.render(f'afn_{r + 1}', view = True, cleanup=True)
     
     # Evaluacion de la cadena 
     w = input(f"Ingrese w para ver si es aceptada por AFN:")
