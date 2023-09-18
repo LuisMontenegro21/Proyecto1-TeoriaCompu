@@ -14,7 +14,7 @@ graf = Graficador()
 
 def evaluate(r, w):
     # r = regex
-    postfix_expr = shutingYard(r)
+    postfix_expr = shunting_yard(r)
     print()
     print(f"Resultado final: {postfix_expr}")
     print()
@@ -40,12 +40,12 @@ def evaluate(r, w):
     
     
     #pasarle un NFA al argumento de la función
-    nfa = []
-    AFD.graphing(nfa)
+    #nfa = []
+    #AFD.graphing(nfa)
 
     #pasarle un DFA al argumento de la función para que lo simplifique
-    dfa = DFA_min()
-    dfa.minimize()
+    #dfa = DFA_min()
+    #dfa.minimize()
     
 
 
