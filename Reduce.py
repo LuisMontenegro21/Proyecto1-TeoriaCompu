@@ -1,4 +1,5 @@
 # Archivo para la reducción de un AFD
+from graphviz import Diagraph
 
 class DFA_min:
 
@@ -21,7 +22,7 @@ class DFA_min:
     
     def minimize(self):
         def hopcroft():
-            
+            dfa_min =  Diagraph()
             accepting_states = self.accept_states
             non_accepting_states = set(self.states) - accepting_states
             equivalence_classes = [accepting_states, non_accepting_states]
@@ -64,6 +65,11 @@ class DFA_min:
                         if next_state is not None:
                             simplified_transitions[(i, symbol)] = simplified_states[equivalence_classes.index(set([next_state]))]
 
+            for state in self.states:
+                dfa_min.node(state)
+            for (source, symbol), target in self.transitions.items():
+                dfa_min.edge(source,target,label = symbol)
+            dfa_min.render('minimized dfa', view = True)
             return DFA(simplified_states, len(simplified_states), self.num_alphabet, self.alphabet, simplified_transitions, simplified_start_state, simplified_accept_states)
 
         return hopcroft()

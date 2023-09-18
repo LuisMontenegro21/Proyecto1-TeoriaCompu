@@ -1,5 +1,6 @@
 # Archivo para la conversión del AFN a un AFD mediante construcción de subconjuntos
-from graphviz import Diagraph
+# 
+from Graphviz import Diagraph
 
 class AFD:
     def __init__(self, num_states, states, num_alphabet, alphabet, start, num_final, final_states, num_transitions, transitions):
