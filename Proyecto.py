@@ -4,7 +4,7 @@
 # Gabriel García 21352, Luis Montenegro 21699
 # Programa para conversión de expresiones regulares
 
-from PostFix import shutingYard
+from PostFix import infix_to_postfix as toPostFix
 from AFD import *
 from Reduce import DFA_min
 from Root import *
@@ -14,7 +14,7 @@ graf = Graficador()
 
 def evaluate(r, w):
     # r = regex
-    postfix_expr = shutingYard(r)
+    postfix_expr = toPostFix(r)
     print()
     print(f"Resultado final: {postfix_expr}")
     print()
