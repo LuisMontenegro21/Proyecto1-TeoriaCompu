@@ -1,5 +1,6 @@
 # Archivo para la reducción de un AFD
 from graphviz import Diagraph
+import re 
 
 class DFA_min:
 
@@ -73,4 +74,6 @@ class DFA_min:
             return DFA(simplified_states, len(simplified_states), self.num_alphabet, self.alphabet, simplified_transitions, simplified_start_state, simplified_accept_states)
 
         return hopcroft()
+
+    
 
