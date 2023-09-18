@@ -33,8 +33,6 @@ class AFD:
             self.transition_table[str(self.states_dict[self.transitions[i][0]]) + str(self.alphabet_dict[self.transitions[i][1]])].append(self.states_dict[self.transitions[i][2]])
         
     
-    def __repr__(self):
-        return 'Q : ' + str(self.states) + "\nΣ : " + str(self.alphabets) + "\nq0 : " + str(self.start) +  "\nF : " + str(self.final_states) + "\nδ : \n" + str(self.transition_table)
     
     def epsilonClosure(self, state):
         #Se crea un diccionario para ver si el estado ya ha sido visitado
