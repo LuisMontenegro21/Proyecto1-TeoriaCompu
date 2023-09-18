@@ -22,10 +22,9 @@ def evaluate(r, w):
     AFD.graphing(nfa)
 
     #pasarle un DFA al argumento de la función para que lo simplifique
-    dfa = []
-    DFA_min.minimize(dfa)
+    dfa = DFA_min()
+    dfa.minimize()
     
-    return 0
 
 
 print("Programa para conversión de expresiones regulares a autómatas\n" + 
