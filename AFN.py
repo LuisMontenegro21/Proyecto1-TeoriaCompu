@@ -1,5 +1,5 @@
 from graphviz import Digraph
-from AFNstate import State  
+from AFNState import State  
 
 
 class Afn:

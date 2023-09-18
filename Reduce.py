@@ -1,5 +1,5 @@
 # Archivo para la reducción de un AFD
-from graphviz import Diagraph
+from graphviz import Digraph
 import re 
 
 class DFA_min:

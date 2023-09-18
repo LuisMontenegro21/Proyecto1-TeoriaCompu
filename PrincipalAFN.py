@@ -1,7 +1,6 @@
 from graphviz import Digraph
-from state import State
-from AFNsimulator import Afn
-
+from AFNState import State
+from AFN import Afn
 # Función que implementa el algoritmo de Thompson para construir un AFN a partir de un árbol de expresión regular
 def thompson(node):
     if not node.nextC:
@@ -95,4 +94,4 @@ def putEpsilon(states):
                     # Agregar el estado siguiente a la pila para explorar sus transiciones epsilon
                     stack.append(nextS)
     # Devolver el conjunto resultante de estados con cierre epsilon
-    return putEpsilon  
+    return putEpsilon

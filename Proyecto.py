@@ -5,10 +5,12 @@
 # Programa para conversión de expresiones regulares
 
 from PostFix import shutingYard
-from AFD import AFD
+from AFD import *
 from Reduce import DFA_min
-#os.environ["PATH"] += os.pathsep + "C:/Program Files/Graphviz/bin/"
+from Root import *
+from PrincipalAFN import *
 
+graf = Graficador()
 
 def evaluate(r, w):
     # r = regex
@@ -16,6 +18,25 @@ def evaluate(r, w):
     print()
     print(f"Resultado final: {postfix_expr}")
     print()
+    
+    # AFN
+    root = graf.build(postfix_expr)
+    print(root)
+    State.count = 1
+    afn = thompson(root)
+    afnPDF = afn.diagram()
+    afnPDF.render(f'afn_{index + 1}', view = True, cleanup=True)
+    
+    # Evaluacion de la cadena 
+    w = input(f"Ingrese w para ver si es aceptada por AFN:")
+    result = showAFN(afn, w)
+    if result:
+        print(f"La cadena fue aceptada por el AFN")
+        print()
+    else:
+        print(f"La cadena no fue aceptada por el AFN")
+        print()
+    
     
     #pasarle un NFA al argumento de la función
     nfa = []

@@ -57,4 +57,3 @@ class Graficador(object):
         else:
             # De lo contrario, la expresión es inválida
             return None  
-
