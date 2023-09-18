@@ -122,7 +122,8 @@ def shutingYard(regex):
     
     
     def convert(regex):
-        return concatenation(interrogationToEpsilon(caracterClass(plusToAsterisk(regex))).replace("E", "ε"))
+        cRegex = concatenation(interrogationToEpsilon(caracterClass(plusToAsterisk(regex))).replace("E", "ε"))
+        return cRegex
     
     
     queue = []
@@ -154,10 +155,9 @@ def shutingYard(regex):
                     if char == ")" and regex[i - 1] != "\\":
                         while stack and stack[-1] != "(":
                             c  = stack.pop()
-                    queue.append(c)
-                c = stack.pop()
-        i += 1
-
+                            queue.append(c)
+                        c = stack.pop()
+                    i += 1
     while stack:
         c = stack.pop()
         queue.append(c)
