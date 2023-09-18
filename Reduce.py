@@ -21,18 +21,18 @@ class DFA_min:
     
     def minimize(self):
         def hopcroft():
-            # Initialize equivalence classes with accepting and non-accepting states
+            
             accepting_states = self.accept_states
             non_accepting_states = set(self.states) - accepting_states
             equivalence_classes = [accepting_states, non_accepting_states]
 
-            # A list of unprocessed equivalence classes
+            
             worklist = [accepting_states, non_accepting_states]
 
             while worklist:
                 P = worklist.pop()
                 for symbol in self.alphabet:
-                    # Create a dictionary to map states to their destination states
+                    
                     state_map = {}
                     for state in P:
                         next_state = self.transitions.get((state, symbol), None)
@@ -42,7 +42,7 @@ class DFA_min:
                             else:
                                 state_map[next_state] = [state]
 
-                    # Split the equivalence class based on state_map
+                    
                     new_equivalence_classes = list(state_map.values())
                     for new_class in new_equivalence_classes:
                         if len(new_class) > 1:
@@ -51,7 +51,7 @@ class DFA_min:
                             worklist.extend(new_equivalence_classes)
                             break
 
-            # Create a simplified DFA based on the equivalence classes
+            
             simplified_states = [i for i, eq_class in enumerate(equivalence_classes)]
             simplified_transitions = {}
             simplified_start_state = simplified_states[equivalence_classes.index(set([self.start_state]))]
