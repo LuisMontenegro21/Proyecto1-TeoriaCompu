@@ -6,6 +6,7 @@
 
 from PostFix import shutingYard
 from AFD import AFD
+from Reduce import DFA_min
 #os.environ["PATH"] += os.pathsep + "C:/Program Files/Graphviz/bin/"
 
 
@@ -16,17 +17,13 @@ def evaluate(r, w):
     print(f"Resultado final: {postfix_expr}")
     print()
     
-    print("Tree")
-    hierarchy = ""
-    for i in range(gethierarchy(tree)):
-        hierarchy += " L"+ str(i)
-    print(level+"\n")
-    printTree(tree)
-    Graph.render()
-
     #pasarle un NFA al argumento de la función
     nfa = []
     AFD.graphing(nfa)
+
+    #pasarle un DFA al argumento de la función para que lo simplifique
+    dfa = []
+    DFA_min.minimize(dfa)
     
     return 0
 
