@@ -23,7 +23,7 @@ class DFA_min:
     
     def minimize(self):
         def hopcroft():
-            dfa_min =  Diagraph()
+            dfa_min =  Digraph()
             accepting_states = self.accept_states
             non_accepting_states = set(self.states) - accepting_states
             equivalence_classes = [accepting_states, non_accepting_states]
@@ -71,7 +71,7 @@ class DFA_min:
             for (source, symbol), target in self.transitions.items():
                 dfa_min.edge(source,target,label = symbol)
             dfa_min.render('minimized dfa', view = True)
-            return DFA(simplified_states, len(simplified_states), self.num_alphabet, self.alphabet, simplified_transitions, simplified_start_state, simplified_accept_states)
+            return DFA_min(simplified_states, len(simplified_states), self.num_alphabet, self.alphabet, simplified_transitions, simplified_start_state, simplified_accept_states)
 
         return hopcroft()
 
