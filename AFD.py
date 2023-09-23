@@ -57,7 +57,7 @@ class AFD:
     
     def isFinalStateDFA(self, state_list):
         for i in state_list:
-            for j in self.finals:
+            for j in self.final_states:
                 if (i == self.states_dict[j]):
                     return True
         return False
@@ -122,14 +122,14 @@ class AFD:
                             dfa.attr('nodo', shape = 'circle')
                         dfa.node(nfa.stateName(list(to_state)))
                     
-                    dfa.edge(nfa.stateName(curr_state)), nfa.stateName(list(to_state), label = nfa.alphabet[all])
+                    dfa.edge(nfa.stateName(curr_state)), nfa.stateName(list(to_state), label=nfa.alphabet[all])
 
                 else:
                     if (-1) not in dfa_states:
                         dfa.attr('nodo', shape = 'circle')
                         dfa.node('φ')
 
-                        for a in range (nfa.num_aphabet - 1):
+                        for a in range (nfa.num_alphabet - 1):
                             dfa.edge('φ', 'φ', nfa.alphabet[a])
                         
                         dfa_states.append(-1)
