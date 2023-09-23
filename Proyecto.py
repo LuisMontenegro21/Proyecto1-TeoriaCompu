@@ -4,7 +4,7 @@
 # Gabriel García 21352, Luis Montenegro 21699
 # Programa para conversión de expresiones regulares
 
-from PostFix import shutingYard
+from PostFix import shunting_yard
 from AFD import *
 from Reduce import DFA_min
 from Root import *
