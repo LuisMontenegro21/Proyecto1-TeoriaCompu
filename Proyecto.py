@@ -51,7 +51,9 @@ def evaluate(r):
      ['A', 'e', 'C'], ['C', 'c', 'C'], ['B', 'b', 'D'],
      ['C', 'c', 'D']])
     #pasarle un NFA al argumento de la función
-    AFD.graphing(nfa, nfa)
+    nfaa = Afn.toAFNparams()
+
+    AFD.graphing(nfaa, nfaa)
 
     #pasarle un DFA al argumento de la función para que lo simplifique
     #dfa = DFA_min()

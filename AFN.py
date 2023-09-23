@@ -62,3 +62,25 @@ class Afn:
             pastS.add(thisS)  # Marcar este estado como explorado
         # Devolver el gráfico del AFN
         return dot  
+    
+    def toAFNparams(self):
+        # extrae los parametros de la clase
+        num_states = State.count  # numero de estados
+        states = [str(i) for i in range(1, num_states + 1)]  # lista de los estados
+        num_alphabet = len(self.stateS.get_alphabet())  # numero de alfabetos
+        alphabet = list(self.stateS.get_alphabet())  # lista de alfabetos
+        start = '1'  # estado inicial
+        num_final = 1  # numero de estados finales
+        final_states = [str(num_states)]  # lista de estados finales como string
+        num_transitions = sum(len(s.changes) for s in State.states)  # numero de transiciones
+        transitions = []
+
+        # Iterar para construir la tabla de transiciones
+        for state in State.states:
+            state_name = str(state.number)
+            for character, next_states in state.changes.items():
+                for next_state in next_states:
+                    next_state_name = str(next_state.number)
+                    transitions.append([state_name, character, next_state_name])
+
+        return num_states, states, num_alphabet, alphabet, start, num_final, final_states, num_transitions, transitions
