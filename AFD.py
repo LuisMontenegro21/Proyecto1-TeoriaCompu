@@ -15,7 +15,7 @@ class AFD:
 
         self.graph = Digraph()
         self.alphabet.append('e')
-        self.num_alphabet += 1
+        self.num_alphabet = num_alphabet + 1
 
         self.states_dict = dict()
         for i in range(self.num_states):
@@ -63,16 +63,16 @@ class AFD:
         return False
 
     def graphing(self, nfa):
-        #graficando el AFN
+        #graficando el AFD
         nfa.graph = Digraph()
         for i in nfa.states:
-            if (i not in nfa.finals):
-                nfa.graph.attr('nodo', shape = 'circle')
+            if (i not in nfa.final_states):
+                nfa.graph.attr('node', shape = 'circle')
                 nfa.graph.node(i)
             else: 
-                nfa.graph.attr('nodo', shape = 'doubleCircle')
+                nfa.graph.attr('node', shape = 'doublecircle')
                 nfa.graph.node(i)
-        nfa.graph.attr('nodo', shape = 'none')
+        nfa.graph.attr('node', shape = 'none')
         nfa.graph.node('')
         nfa.graph.edge('', nfa.start)   
 
@@ -90,9 +90,9 @@ class AFD:
         dfa_stack.append(epsilon_closure[nfa.start])
 
         if (nfa.isFinalStateDFA(dfa_stack[0])):
-            dfa.attr('nodo', shape = 'doubleCircle')
+            dfa.attr('node', shape = 'doublecircle')
         else:
-            dfa.attr('nodo', shape = 'circle')
+            dfa.attr('node', shape = 'circle')
         dfa.node(nfa.stateName(dfa_stack[0]))
 
         dfa.attr('node', shape = 'none')
@@ -117,16 +117,16 @@ class AFD:
                         dfa_states.append(list(to_state))
 
                         if (nfa.isFinalStateDFA(list(to_state))):
-                            dfa.attr('nodo', shape = 'doubleCircle')
+                            dfa.attr('node', shape = 'doublecircle')
                         else:
-                            dfa.attr('nodo', shape = 'circle')
+                            dfa.attr('node', shape = 'circle')
                         dfa.node(nfa.stateName(list(to_state)))
                     
                     dfa.edge(nfa.stateName(curr_state)), nfa.stateName(list(to_state), label=nfa.alphabet[all])
 
                 else:
                     if (-1) not in dfa_states:
-                        dfa.attr('nodo', shape = 'circle')
+                        dfa.attr('node', shape = 'circle')
                         dfa.node('φ')
 
                         for a in range (nfa.num_alphabet - 1):

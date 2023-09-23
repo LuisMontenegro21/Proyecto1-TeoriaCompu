@@ -4,7 +4,7 @@
 # Gabriel García 21352, Luis Montenegro 21699
 # Programa para conversión de expresiones regulares
 
-from PostFix import shunting_yard
+from PostFix import infix_to_postfix as toPostFix
 from AFD import *
 from Reduce import DFA_min
 from Root import *
@@ -12,9 +12,9 @@ from PrincipalAFN import *
 
 graf = Graficador()
 
-def evaluate(r, w):
-    # r = regex
-    postfix_expr = shunting_yard(r)
+def evaluate(r):
+    # r => regex
+    postfix_expr = toPostFix(r)
     print()
     print(f"Resultado final: {postfix_expr}")
     print()
@@ -38,10 +38,20 @@ def evaluate(r, w):
         print(f"La cadena no fue aceptada por el AFN")
         print()
     
-    
+    nfa = AFD(
+    4,  # number of states
+    ['A', 'B', 'C', 'D'],  # array of states
+    3,  # number of alphabets
+    ['a', 'b', 'c'],  # array of alphabets
+    'A',  # start state
+    1,  # number of final states
+    ['D'],  # array of final states
+    7,  # number of transitions
+    [['A', 'a', 'A'], ['A', 'e', 'B'], ['B', 'b', 'B'],
+     ['A', 'e', 'C'], ['C', 'c', 'C'], ['B', 'b', 'D'],
+     ['C', 'c', 'D']])
     #pasarle un NFA al argumento de la función
-    #nfa = []
-    #AFD.graphing(nfa)
+    AFD.graphing(nfa, nfa)
 
     #pasarle un DFA al argumento de la función para que lo simplifique
     #dfa = DFA_min()
@@ -52,6 +62,6 @@ def evaluate(r, w):
 print("Programa para conversión de expresiones regulares a autómatas\n" + 
           "En este programa se denota a epsilon como e")
 r = str(input("Ingrese una expresion regular r: "))
-w = str(input("Ingrese una cadena w: "))
-evaluate(r, w)
+# w = str(input("Ingrese una cadena w: "))
+evaluate(r)
 
