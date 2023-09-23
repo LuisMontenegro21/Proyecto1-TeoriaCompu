@@ -1,5 +1,5 @@
 # Archivo para la conversión del AFN a un AFD mediante construcción de subconjuntos
-from graphviz import Digraph
+#from graphviz import Digraph
 
 class AFD:
     def __init__(self, num_states, states, num_alphabet, alphabet, start, num_final, final_states, num_transitions, transitions):
@@ -122,7 +122,7 @@ class AFD:
                             dfa.attr('node', shape = 'circle')
                         dfa.node(nfa.stateName(list(to_state)))
                     
-                    dfa.edge(nfa.stateName(curr_state)), nfa.stateName(list(to_state), label=nfa.alphabet[all])
+                    dfa.edge((nfa.stateName(curr_state)), nfa.stateName(list(to_state)), label=nfa.alphabet[all])
 
                 else:
                     if (-1) not in dfa_states:
